@@ -14,9 +14,11 @@ module OCR
     def parse
       text_number = input.scan /.{#{OCR_WIDTH}}/
 
-      (0...ACCOUNT_NUMBER_LENGTH).reduce([]) do |numbers, position|
+      account_number = (0...ACCOUNT_NUMBER_LENGTH).reduce([]) do |numbers, position|
         numbers << number_position(text_number, position)
       end
+
+      account_number.join.to_i
     end
 
     private
@@ -26,7 +28,7 @@ module OCR
           offset = position + (index * ACCOUNT_NUMBER_LENGTH)
           ocr_sections << text_number[offset]
         end
-  
+
         ocr_number_parser = OcrNumberParser.new(ocr_number)
         ocr_number_parser.parse
     end
